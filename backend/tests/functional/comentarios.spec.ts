@@ -64,7 +64,10 @@ test.group('POST /posts/:slug/comentarios', (group) => {
     const detalle = await client.get(`/posts/${POST_SLUG}`)
 
     // Assert
-    const guardado = await db.from('comentarios').where('id', respuesta.body().comentario.id).first()
+    const guardado = await db
+      .from('comentarios')
+      .where('id', respuesta.body().comentario.id)
+      .first()
     assert.equal(guardado.estado, 'pendiente')
     assert.equal(guardado.post_id, POST_ID)
     detalle.assertStatus(200)
@@ -256,7 +259,9 @@ test.group('POST /posts/:slug/comentarios', (group) => {
     await db.table('posts').insert(unPostBorrador())
 
     // Act
-    const respuesta = await client.post('/posts/post-borrador/comentarios').json(datosDeComentario())
+    const respuesta = await client
+      .post('/posts/post-borrador/comentarios')
+      .json(datosDeComentario())
 
     // Assert
     respuesta.assertStatus(404)
